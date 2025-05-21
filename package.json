@@ -11,16 +11,14 @@
   "dependencies": {
     "expo": "~53.0.9",
     "expo-status-bar": "~2.2.3",
-    "react": "19.0.0",
+    "react": "19.1.0",
     "react-native": "0.79.2",
-    "react-native-edge-to-edge": "^1.6.0",
-    "react-native-nitro-modules": "^0.25.2",
-    "react-native-unistyles": "^3.0.0-rc.4"
+    "react-native-unistyles": "^2.32.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/node": "^22.15.18",
-    "@types/react": "^19.1.4",
+    "@babel/core": "^7.27.1",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.5",
     "@types/react-native": "^0.73.0",
     "typescript": "^5.8.3"
   },
