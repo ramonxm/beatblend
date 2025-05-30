@@ -21,15 +21,15 @@ importers:
         specifier: 0.79.2
         version: 0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0)
       react-native-unistyles:
-        specifier: ^2.32.0
-        version: 2.32.0(@react-native/normalize-colors@0.79.2)(react-native@0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0))(react@19.1.0)
+        specifier: ^2.41.0
+        version: 2.41.0(@react-native/normalize-colors@0.79.2)(react-native@0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.27.3
         version: 7.27.3
       '@types/node':
-        specifier: ^22.15.21
-        version: 22.15.21
+        specifier: ^22.15.26
+        version: 22.15.26
       '@types/react':
         specifier: ^19.1.6
         version: 19.1.6
@@ -797,8 +797,8 @@ packages:
   '@types/istanbul-reports@3.0.4':
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
 
-  '@types/node@22.15.21':
-    resolution: {integrity: sha512-EV/37Td6c+MgKAbkcLG6vqZ2zEYHD7bvSrzqqs2RIhbA6w3x+Dqz8MZM3sP6kGTeLrdoOgKZe+Xja7tUB2DNkQ==}
+  '@types/node@22.15.26':
+    resolution: {integrity: sha512-lgISkNrqdQ5DAzjBhnDNGKDuXDNo7/1V4FhNzsKREhWLZTOELQAptuAnJMzHtUl1qyEBBy9lNBKQ9WjyiSloTw==}
 
   '@types/react-native@0.73.0':
     resolution: {integrity: sha512-6ZRPQrYM72qYKGWidEttRe6M5DZBEV5F+MHMHqd4TTYx0tfkcdrUFGdef6CCxY0jXU7wldvd/zA/b0A/kTeJmA==}
@@ -2054,8 +2054,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-unistyles@2.32.0:
-    resolution: {integrity: sha512-/3Kp5gaOwcCtWv4vg5cxWyb/r8DiZqwlWTHF9A1lx3SQ/Lt7TW0ShDwXoaY6MxhVQTvLSe7GHcO1AX79TsLf3g==}
+  react-native-unistyles@2.41.0:
+    resolution: {integrity: sha512-74AkP3JoXe6MEuMA430qvrehR6XVB7WSvYP5Nj/Tk/jnOfcHwgFLLEioly9LuR8GedoVoFzjMGpnFnqAitvH5g==}
     engines: {node: '>= 18.0.0'}
     peerDependencies:
       '@react-native/normalize-colors': '*'
@@ -3465,14 +3465,14 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       jest-mock: 29.7.0
 
   '@jest/fake-timers@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -3506,7 +3506,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
@@ -3687,7 +3687,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
@@ -3699,7 +3699,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-  '@types/node@22.15.21':
+  '@types/node@22.15.26':
     dependencies:
       undici-types: 6.21.0
 
@@ -4001,7 +4001,7 @@ snapshots:
 
   chrome-launcher@0.15.2:
     dependencies:
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -4010,7 +4010,7 @@ snapshots:
 
   chromium-edge-launcher@0.2.0:
     dependencies:
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -4460,7 +4460,7 @@ snapshots:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -4470,7 +4470,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -4497,7 +4497,7 @@ snapshots:
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       jest-util: 29.7.0
 
   jest-regex-util@29.6.3: {}
@@ -4505,7 +4505,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -4522,7 +4522,7 @@ snapshots:
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 22.15.21
+      '@types/node': 22.15.26
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -4720,7 +4720,7 @@ snapshots:
   metro-source-map@0.82.3:
     dependencies:
       '@babel/traverse': 7.27.1
-      '@babel/traverse--for-generate-function-map': '@babel/traverse@7.27.1'
+      '@babel/traverse--for-generate-function-map': '@babel/traverse@7.27.3'
       '@babel/types': 7.27.1
       flow-enums-runtime: 0.0.6
       invariant: 2.2.4
@@ -5061,7 +5061,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0)
 
-  react-native-unistyles@2.32.0(@react-native/normalize-colors@0.79.2)(react-native@0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0))(react@19.1.0):
+  react-native-unistyles@2.41.0(@react-native/normalize-colors@0.79.2)(react-native@0.79.2(@babel/core@7.27.3)(@types/react@19.1.6)(react@19.1.0))(react@19.1.0):
     dependencies:
       '@react-native/normalize-colors': 0.79.2
       react: 19.1.0
