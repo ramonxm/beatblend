@@ -1,59 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-const lightTheme = {
-  colors: {
-    primary: '#ff1ff4',
-    secondary: '#1ff4ff',
-    background: '#fff',
-  },
-  gap: (v: number) => v * 8,
-};
+import './src/styles/global';
 
-const darkTheme = {
-  colors: {
-    primary: '#aa12ff',
-    secondary: 'pink',
-    background: '#222',
-  },
-  gap: (v: number) => v * 8,
-};
-
-const appThemes = {
-  light: lightTheme,
-  dark: darkTheme,
-};
-
-const breakpoints = {
-  xs: 0,
-  sm: 300,
-  md: 500,
-  lg: 800,
-  xl: 1200,
-};
-
-// TypeScript module augmentation for Unistyles
-// In a real project, move this to a separate .d.ts file
-import 'react-native-unistyles';
-type AppThemes = typeof appThemes;
-type AppBreakpoints = typeof breakpoints;
-declare module 'react-native-unistyles' {
-  export interface UnistylesThemes extends AppThemes {}
-  export interface UnistylesBreakpoints extends AppBreakpoints {}
-}
-
-StyleSheet.configure({
-  themes: appThemes,
-  breakpoints,
-  settings: {
-    adaptiveThemes: true,
-    initialTheme: 'light',
-  },
-});
-
-const styles = StyleSheet.create((theme) => ({
+const stylesheet = createStyleSheet((theme) => ({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -67,8 +19,8 @@ const styles = StyleSheet.create((theme) => ({
   },
 }));
 
-const App: React.FC = () => {
-  const { theme } = useUnistyles();
+const App = () => {
+    const { theme, styles } = useStyles(stylesheet);
 
   return (
     <View style={styles.container}>
