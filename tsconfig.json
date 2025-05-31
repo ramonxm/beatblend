@@ -10,8 +10,15 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+    "**/*.tsx"
+  ],
+  "baseUrl": "./src",
+  "paths": {
+    "@app/*": [
+      "app/*"
+    ],
+    "@styles/*": [
+      "styles/*"
+    ]
+  }
 }

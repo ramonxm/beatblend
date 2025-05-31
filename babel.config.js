@@ -4,7 +4,16 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      ['react-native-unistyles/plugin']
+      [
+        'module-resolver',
+        {
+          root: ['./src/app'],
+          alias: {
+            '@app': './src/app',
+            '@styles': './src/styles',
+          },
+        },
+      ],
     ]
   }
 } 
