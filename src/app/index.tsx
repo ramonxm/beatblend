@@ -1,177 +1,281 @@
-import { useState } from "react";
-import {
-  FlatList,
-  Text,
-  View,
-  Image,
-  TextInput,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
-import { Artist } from "../services/deezerService";
-import { useRouter } from "expo-router";
-import { useArtistsQuery } from "../queries/useArtistsQuery";
+import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { createStyleSheet, useStyles } from "react-native-unistyles";
+import { useState } from 'react';
 
-const CARD_WIDTH = 140;
-const CARD_HEIGHT = 180;
-
-function ArtistCard({ artist }: { artist: Artist }) {
-  return (
-    <View style={styles.card}>
-      <Image source={{ uri: artist.picture_medium }} style={styles.cardImage} />
-      <Text style={styles.cardName} numberOfLines={1}>
-        {artist.name}
-      </Text>
-    </View>
-  );
+// Tipos explícitos para músicas e mashup
+interface Song {
+  id: string;
+  title: string;
+  artist: string;
+  cover: string;
+}
+interface Mashup {
+  title: string;
+  artists: string;
+  cover: string;
+  url: string;
 }
 
+const MOCK_SONGS: Song[] = [
+  {
+    id: '1',
+    title: 'Blinding Lights',
+    artist: 'The Weeknd',
+    cover: 'https://i.scdn.co/image/ab67616d0000b273e5b8b7b8b7b8b7b8b7b8b7b8',
+  },
+  {
+    id: '2',
+    title: 'Levitating',
+    artist: 'Dua Lipa',
+    cover: 'https://i.scdn.co/image/ab67616d0000b273b8b7b8b7b8b7b8b7b8b7b8b7',
+  },
+  {
+    id: '3',
+    title: 'Shape of You',
+    artist: 'Ed Sheeran',
+    cover: 'https://i.scdn.co/image/ab67616d0000b273c7b8b7b8b7b8b7b8b7b8b7b8',
+  },
+];
+
+const MOCK_MASHUP: Mashup = {
+  title: 'Blinding Levitating',
+  artists: 'The Weeknd x Dua Lipa',
+  cover: 'https://i.scdn.co/image/ab67616d0000b273e5b8b7b8b7b8b7b8b7b8b7b8',
+  url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+};
+
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+    justifyContent: 'center',
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing.xl,
+    marginBottom: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: theme.colors.textPrimary,
+  },
+  slotRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginBottom: theme.spacing.xl,
+    marginTop: theme.spacing.lg,
+  },
+  slot: {
+    width: 150,
+    height: 180,
+    borderRadius: theme.borderRadius.lg,
+    backgroundColor: theme.colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  slotSelected: {
+    borderColor: theme.colors.accent,
+    shadowOpacity: 0.18,
+  },
+  slotEmptyIcon: {
+    marginBottom: 10,
+    opacity: 0.25,
+  },
+  slotCover: {
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    marginBottom: 10,
+  },
+  slotTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: theme.colors.textPrimary,
+    textAlign: 'center',
+  },
+  slotArtist: {
+    fontSize: 13,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  plusIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    backgroundColor: theme.colors.accent,
+    borderRadius: 12,
+    padding: 2,
+    zIndex: 2,
+  },
+  mixButton: {
+    marginTop: theme.spacing.xl,
+    alignSelf: 'center',
+    backgroundColor: theme.colors.accent,
+    borderRadius: 32,
+    paddingVertical: 18,
+    paddingHorizontal: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: theme.colors.accent,
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 6,
+    opacity: 1,
+  },
+  mixButtonDisabled: {
+    opacity: 0.5,
+  },
+  mixButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginLeft: 10,
+  },
+  mashupPlayer: {
+    marginTop: theme.spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mashupCover: {
+    width: 120,
+    height: 120,
+    borderRadius: 18,
+    marginBottom: 12,
+  },
+  mashupTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: theme.colors.textPrimary,
+    textAlign: 'center',
+  },
+  mashupArtists: {
+    fontSize: 15,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  audioMock: {
+    marginTop: 10,
+    color: theme.colors.textSecondary,
+    fontSize: 13,
+    fontStyle: 'italic',
+  },
+}));
+
 export default function HomeScreen() {
-  const router = useRouter();
-  const [search, setSearch] = useState("");
+  const { styles } = useStyles(stylesheet);
+  const [vocal, setVocal] = useState<Song | null>(null);
+  const [melody, setMelody] = useState<Song | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [mashup, setMashup] = useState<Mashup | null>(null);
 
-  const { data: artists = [], isLoading: loading } = useArtistsQuery(search);
+  function selectSong(type: 'vocal' | 'melody') {
+    const available = MOCK_SONGS.filter(s => s.id !== (type === 'vocal' ? melody?.id : vocal?.id));
+    const song = available[Math.floor(Math.random() * available.length)];
+    if (type === 'vocal') setVocal(song);
+    else setMelody(song);
+  }
 
-  const handleSearch = (query: string) => {
-    setSearch(query);
-  };
+  function handleMix() {
+    setLoading(true);
+    setTimeout(() => {
+      setMashup(MOCK_MASHUP);
+      setLoading(false);
+    }, 1800);
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#111" }}>
-      <View style={{ flex: 1 }}>
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 28,
-            fontWeight: "bold",
-            marginLeft: 20,
-            marginTop: 16,
-            marginBottom: 10,
-            letterSpacing: 1.2,
-          }}
-        >
-          BeatBlend
-        </Text>
-        <TextInput
-          value={search}
-          onChangeText={handleSearch}
-          placeholder="Buscar artista..."
-          placeholderTextColor="#aaa"
-          style={{
-            fontSize: 16,
-            color: "#fff",
-            marginBottom: 16,
-            borderRadius: 12,
-            paddingVertical: 10,
-            marginHorizontal: 20,
-            paddingHorizontal: 16,
-            backgroundColor: "#222",
-          }}
-        />
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 20,
-            marginLeft: 20,
-            marginBottom: 10,
-            fontWeight: "bold",
-          }}
-        >
-          Top Artists
-        </Text>
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color="#ff0"
-            style={{ marginTop: 40 }}
-          />
-        ) : (
-          <FlatList
-            horizontal
-            data={artists}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => String(item.id)}
-            contentContainerStyle={{ paddingLeft: 20, paddingRight: 10 }}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={{
-                  shadowRadius: 8,
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: index < 3 ? 0.5 : 0.2,
-                  shadowColor: index < 3 ? "#ff0" : "#000",
-                }}
-                onPress={() =>
-                  router.push({ pathname: "/artist", params: { id: item.id } })
-                }
-              >
-                <ArtistCard artist={item} />
-                {index < 3 && (
-                  <View
-                    style={{
-                      top: 8,
-                      right: 8,
-                      borderRadius: 8,
-                      paddingVertical: 2,
-                      position: "absolute",
-                      paddingHorizontal: 6,
-                      backgroundColor: "#ff0",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "#222",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      TOP
-                    </Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            )}
-          />
-        )}
+    <SafeAreaView style={styles.container}>
+      <LinearGradient
+        colors={["#f8fafc", "#e0e7ff", "#f0abfc"]}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      />
+      <View style={styles.headerRow}>
+        <Text style={styles.headerText}>🎚️ BeatBlend Mashup</Text>
       </View>
+      <View style={styles.slotRow}>
+        {/* Slot Vocal */}
+        <Pressable
+          style={[styles.slot, vocal && styles.slotSelected]}
+          onPress={() => selectSong('vocal')}
+        >
+          <View style={styles.plusIcon}><FontAwesome5 name="microphone" size={16} color="#000" /></View>
+          {vocal ? (
+            <>
+              <Image source={{ uri: vocal.cover }} style={styles.slotCover} />
+              <Text style={styles.slotTitle}>{vocal.title}</Text>
+              <Text style={styles.slotArtist}>{vocal.artist}</Text>
+            </>
+          ) : (
+            <>
+              <MaterialIcons name="mic" size={40} color="#aaa" style={styles.slotEmptyIcon} />
+              <Text style={styles.slotTitle}>Escolher Vocal</Text>
+            </>
+          )}
+        </Pressable>
+        {/* Slot Melodia */}
+        <Pressable
+          style={[styles.slot, melody && styles.slotSelected]}
+          onPress={() => selectSong('melody')}
+        >
+          <View style={styles.plusIcon}><FontAwesome5 name="music" size={16} color="#000" /></View>
+          {melody ? (
+            <>
+              <Image source={{ uri: melody.cover }} style={styles.slotCover} />
+              <Text style={styles.slotTitle}>{melody.title}</Text>
+              <Text style={styles.slotArtist}>{melody.artist}</Text>
+            </>
+          ) : (
+            <>
+              <MaterialIcons name="music-note" size={40} color="#aaa" style={styles.slotEmptyIcon} />
+              <Text style={styles.slotTitle}>Escolher Melodia</Text>
+            </>
+          )}
+        </Pressable>
+      </View>
+      <TouchableOpacity
+        style={[styles.mixButton, (!vocal || !melody || loading) && styles.mixButtonDisabled]}
+        disabled={!vocal || !melody || loading}
+        onPress={handleMix}
+        activeOpacity={0.85}
+      >
+        {loading ? (
+          <ActivityIndicator color="#000" />
+        ) : (
+          <MaterialIcons name="graphic-eq" size={24} color="#000" />
+        )}
+        <Text style={styles.mixButtonText}>{loading ? 'Mixando...' : 'Mixar'}</Text>
+      </TouchableOpacity>
+      {mashup && !loading && (
+        <View style={styles.mashupPlayer}>
+          <Image source={{ uri: mashup.cover }} style={styles.mashupCover} />
+          <Text style={styles.mashupTitle}>{mashup.title}</Text>
+          <Text style={styles.mashupArtists}>{mashup.artists}</Text>
+          {/* Player real pode ser adicionado depois */}
+          <Text style={styles.audioMock}>[Player de áudio mockado]</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
-    backgroundColor: "#222",
-    borderRadius: 18,
-    marginRight: 16,
-    alignItems: "center",
-    padding: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  cardImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    marginBottom: 12,
-    backgroundColor: "#333",
-  },
-  cardName: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 4,
-    textAlign: "center",
-  },
-  cardFans: {
-    color: "#aaa",
-    fontSize: 13,
-    textAlign: "center",
-  },
-});
